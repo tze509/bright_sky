@@ -1,0 +1,43 @@
+<h1>Weather Conditions</h1>
+<hr>
+
+<div class="row">
+  <div class="col-sm-4">
+
+    <%= form_tag "/conditions", method: 'get' do %>
+
+      <input type="text" name="address" placeholder="Enter city name" class="form-control m-3">
+
+      <button class="form-control m-3 btn btn-primary">Get Current Conditions</button>
+    <% end %>
+
+  </div>
+
+  <% api_key = '4ce6f502d38ddae567bf1702b05e168c' %>
+  <% weather_json = open("https://api.openweathermap.org/data/2.5/weather?q=Chicago&appid=#{api_key}").read %>
+  <% weather_data = JSON.parse(weather_json) %>
+
+  <div class="col-sm-4">
+    <table class="table table-striped table-bordered m-3">
+        <tbody>
+          <tr>
+            <td>Right Now:</td>
+            <td>Rain</td>
+          </tr>
+          <tr>
+            <td>Current Temperature:</td>
+            <td>31 degrees</td>
+          </tr>
+          <tr>
+            <td>Wind:</td>
+            <td>8 mph</td>
+          </tr>
+          <tr>
+            <td>Humidity:</td>
+            <td>63%</td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
+
+</div>
