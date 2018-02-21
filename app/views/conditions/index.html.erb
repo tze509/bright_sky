@@ -6,35 +6,50 @@
 
     <%= form_tag "/conditions", method: 'get' do %>
 
-      <input type="text" name="address" placeholder="Enter city name" class="form-control m-3">
+      <input type="text" name="address" placeholder="Chicago" class="form-control m-3">
 
       <button class="form-control m-3 btn btn-primary">Get Current Conditions</button>
     <% end %>
 
   </div>
 
-  <% api_key = '4ce6f502d38ddae567bf1702b05e168c' %>
-  <% weather_json = open("https://api.openweathermap.org/data/2.5/weather?q=Chicago&appid=#{api_key}").read %>
+
+  <% if params[:address].blank?%>
+        <%city = 'Chicago'%>
+  <%else%>
+        <%city = params[:address].to_s%>
+  <%end%>
+
+  <% api_key = '333b45f00fdfbab439ac1d1d916c04c2' %>
+
+  <% weather_json = open("https://api.openweathermap.org/data/2.5/weather?q=#{city}&appid=#{api_key}").read %>
   <% weather_data = JSON.parse(weather_json) %>
+
+  <% weather = weather_data["weather"][0]["main"] %>
+  <% temp_k = weather_data["main"]["temp"]%>
+  <% temp_c = (temp_k-273).to_i%>
+  <% wind = weather_data["wind"]["speed"]%>
+  <% humidity = weather_data["main"]["humidity"]%>
+
 
   <div class="col-sm-4">
     <table class="table table-striped table-bordered m-3">
         <tbody>
           <tr>
             <td>Right Now:</td>
-            <td>Rain</td>
+            <td><%= weather%></td>
           </tr>
           <tr>
             <td>Current Temperature:</td>
-            <td>31 degrees</td>
+            <td><%= temp_c%></td>
           </tr>
           <tr>
             <td>Wind:</td>
-            <td>8 mph</td>
+            <td><%= wind%></td>
           </tr>
           <tr>
             <td>Humidity:</td>
-            <td>63%</td>
+            <td><%= humidity%></td>
           </tr>
         </tbody>
     </table>
